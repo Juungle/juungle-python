@@ -1,3 +1,5 @@
+[![Python application](https://github.com/Juungle/juungle-python/actions/workflows/run_tests.yml/badge.svg)](https://github.com/Juungle/juungle-python/actions/workflows/run_tests.yml)
+
 ## juungle-python
 Python package to access Juungle.net API
 
