@@ -30,7 +30,7 @@ class Auth():
         if response.status_code == 200:
             return response.json()['jwtToken']
         else:
-            raise BaseException('Login failed!')
+            raise BaseException('Login failed: {}'.format(response.content))
 
     def call_post(self, url, data, with_token=False,
                   headers={'Content-Type': 'application/json'}):

@@ -1,15 +1,12 @@
 from juungle.auth import Auth
 from juungle.tokens import TOKENS_IDS
+from juungle.user import User
 
 
 class NFTs(Auth):
     def __init__(self):
         Auth.__init__(self)
-        self.list_nfts = list()
-        self._search_options = {
-            'offset': 0,
-            'limit': 10000
-        }
+        self.clear()
 
     def add_nft(self, nft_info):
         self.list_nfts.append(NFT(nft_info))
@@ -22,6 +19,13 @@ class NFTs(Auth):
                 self.add_nft(nft)
         else:
             raise BaseException('Query failed {}'.format(response.content))
+
+    def clear(self):
+        self.list_nfts = list()
+        self._search_options = {
+            'offset': 0,
+            'limit': 10000
+        }
 
     @property
     def token_group(self):
@@ -89,6 +93,13 @@ class NFTs(Auth):
         else:
             raise ValueError('Available to buy must be True or False')
 
+    def get_my_nfts(self):
+        self.clear()
+        user = User()
+        self._search_options['userId'] = user.user_id
+        # Wait a little bit before trying to query again
+        self.get_nfts()
+
 
 class NFT(Auth):
     def __init__(self, nft_info):
@@ -118,6 +129,9 @@ class NFT(Auth):
     def is_purchased(self):
         return bool(self.purchase_txid)
 
+    def _convert_bch_to_sats(self, bch):
+        return bch * 100000000
+
     @property
     def is_for_sale(self):
         if self.price_satoshis and self.deposit_txid and \
@@ -140,3 +154,26 @@ class NFT(Auth):
 
         self.buy_price = response['priceSatoshis']
         self.buy_address = response['address']
+
+    def set_price(self, sats=None, bch=None):
+
+        if not sats and not bch:
+            raise ValueError('Value must be set as satoshis or BCH')
+
+        price = sats
+        if bch:
+            price = self._convert_bch_to_sats(bch)
+
+        data = {
+            "nftId": self.nft_id,
+            "priceSatoshis": price
+        }
+
+        self.call_post('user/nfts/set_price', data, True)
+
+    def cancel_sale(self):
+        data = {
+            "nftId": self.nft_id,
+        }
+
+        self.call_post('user/nfts/cancel_sale', data, True)

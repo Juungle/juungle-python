@@ -1,4 +1,6 @@
 [![Python application](https://github.com/Juungle/juungle-python/actions/workflows/run_tests.yml/badge.svg)](https://github.com/Juungle/juungle-python/actions/workflows/run_tests.yml)
+## NOTE: ALTHOUGH THIS PROJECT WORKS, IT IS STILL UNDER HEAVY DEVELOPMENT AND THINGS WILL CHANGE BEFORE 1.0
+
 
 ## juungle-python
 Python package to access Juungle.net API
@@ -10,7 +12,7 @@ Python package to access Juungle.net API
 ## User credentials for Juungle.net
 Create a file `user-config.ini`:
 ```
-LOGIN_USERNAME="username"
+LOGIN_USERNAME="username@email"
 LOGIN_PASSWORD="password"
 ```
 
@@ -31,6 +33,19 @@ for nft in nfts.list_nfts:
     if nft.price_bch <= 0.01:
         print(nft.token_name)
 ```
+
+List all my NFTs
+
+```python
+from juungle.nfts import NFTS
+
+nfts = NFTs()
+nfts.get_my_nfts()
+
+for nft in nfts.list_nfts:
+    print(nft.token_name)
+```
+
 
 ## Tokens Group IDs
 Because tokens/group name are not unique we have to use the HEX id that can be

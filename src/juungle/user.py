@@ -21,7 +21,7 @@ class User(Auth):
             self.deposit_address = j_response['depositAddress']
             self.bch_balance = j_response['bchBalance']
         else:
-            raise BaseException('Login fail!')
+            raise BaseException('Login fail: {}'.format(response.content))
 
     def withdraw_bch(self, to_address):
         data = {
