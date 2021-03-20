@@ -1,0 +1,7 @@
+isort
+pydocstyle
+pytest==5.4.3
+pytest-cov
+pytest-docstyle
+pytest-isort
+pytest-pylint

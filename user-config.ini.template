@@ -1,0 +1,3 @@
+[DEFAULT]
+LOGIN_USERNAME='your_email'
+LOGIN_PASSWORD='your_password'
