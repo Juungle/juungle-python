@@ -12,16 +12,12 @@ class User(Auth):
         self._load_user()
 
     def _load_user(self):
-
         response = self.call_get_json("/user/details", {}, True)
-        if response.status_code == 200:
-            j_response = response.json()
-            self.user_id = j_response['id']
-            self.email = j_response['email']
-            self.deposit_address = j_response['depositAddress']
-            self.bch_balance = j_response['bchBalance']
-        else:
-            raise BaseException('Login fail: {}'.format(response.content))
+        j_response = response.json()
+        self.user_id = j_response['id']
+        self.email = j_response['email']
+        self.deposit_address = j_response['depositAddress']
+        self.bch_balance = j_response['bchBalance']
 
     def withdraw_bch(self, to_address):
         data = {

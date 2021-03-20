@@ -10,11 +10,21 @@ Python package to access Juungle.net API
 `$ python -m pip -r requirements.txt`
 
 ## User credentials for Juungle.net
+### Using a config file
 Create a file `user-config.ini`:
 ```
 LOGIN_USERNAME="username@email"
 LOGIN_PASSWORD="password"
 ```
+### While creaing the object
+Inside the code
+
+```python
+from juungle.nfts import NFTs
+
+nfts = NFTs('username@email', 'password')
+```
+
 
 ## Usage
 List all WAIFUs nfts that are being sale for 0.01 BCH or less

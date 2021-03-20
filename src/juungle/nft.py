@@ -13,12 +13,9 @@ class NFTs(Auth):
 
     def get_nfts(self):
         response = self.call_get_query('/nfts', self._search_options)
-        if response.status_code == 200:
-            l_nfts = response.json()
-            for nft in l_nfts['nfts']:
-                self.add_nft(nft)
-        else:
-            raise BaseException('Query failed {}'.format(response.content))
+        l_nfts = response.json()
+        for nft in l_nfts['nfts']:
+            self.add_nft(nft)
 
     def clear(self):
         self.list_nfts = list()
