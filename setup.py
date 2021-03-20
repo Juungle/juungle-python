@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as f_file:
 
 setuptools.setup(
     name="juungle",
-    version="0.3",
+    version="0.4",
     author="Eduardo Elias",
     author_email="camponez@gmail.com",
     description="Juungle python package for juungle.net",
