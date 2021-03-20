@@ -1,3 +1,4 @@
+"""Setup module."""
 import setuptools
 
 with open("README.md", "r", encoding="utf-8") as f_file:
@@ -9,7 +10,7 @@ setuptools.setup(
     version="0.3",
     author="Eduardo Elias",
     author_email="camponez@gmail.com",
-    description="Juungle python package",
+    description="Juungle python package for juungle.net",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Juungle/juungle-python",
