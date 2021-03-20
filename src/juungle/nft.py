@@ -106,6 +106,9 @@ class NFT(Auth):
             self.price_bch = nft_info["priceSatoshis"] / 100000000
         self.ts = nft_info["ts"]
         self.purchase_hold = nft_info["purchaseHold"]
+        self.buy_price = None
+        self.buy_address = None
+        Auth.__init__(self)
 
     @property
     def name(self):
@@ -114,3 +117,26 @@ class NFT(Auth):
     @property
     def is_purchased(self):
         return bool(self.purchase_txid)
+
+    @property
+    def is_for_sale(self):
+        if self.price_satoshis and self.deposit_txid and \
+                not self.withdraw_txid and not self.purchase_txid:
+            return True
+        else:
+            False
+
+    def buy(self, to_address):
+        if not to_address:
+            raise ValueError('BCH Address must be inform!')
+
+        data = {
+            "nftId": self.nft_id,
+            "address": to_address
+        }
+
+        response = self.call_post('nfts/create_purchase_hold', data,
+                                  True).json()
+
+        self.buy_price = response['priceSatoshis']
+        self.buy_address = response['address']

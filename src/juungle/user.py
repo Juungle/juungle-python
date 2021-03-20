@@ -13,10 +13,7 @@ class User(Auth):
 
     def _load_user(self):
 
-        response = self.call_get_json(
-            "/user/details",
-            {"X-Access-Token": self.token}
-        )
+        response = self.call_get_json("/user/details", {}, True)
         if response.status_code == 200:
             j_response = response.json()
             self.user_id = j_response['id']
@@ -25,3 +22,11 @@ class User(Auth):
             self.bch_balance = j_response['bchBalance']
         else:
             raise BaseException('Login fail!')
+
+    def withdraw_bch(self, to_address):
+        data = {
+            "toAddress": to_address,
+            "password": self.login_pass
+        }
+        response = self.call_post('user/withdraw_bch', data, True)
+        print(response.json()['txid'])
