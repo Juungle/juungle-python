@@ -81,7 +81,6 @@ class Auth():
             self._limiter = Limiter(response.headers)
 
         if response.status_code == 200:
-            print(response.json())
             if not response.json()['success']:
                 raise CommandFailed('Login failed: {}'.format(
                     response.content))
