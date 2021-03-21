@@ -1,9 +1,11 @@
 """Auth module."""
 import configparser
-import json
 import os
+import time
 
 import requests
+
+from juungle.rate_limiter import Limiter
 
 URL_API = "https://www.juungle.net/api/v1"
 
@@ -54,6 +56,8 @@ class Auth():
         if not self.login_pass:
             raise NoPasswordProvided
 
+        self._limiter = None
+
     def _get_token(self):
         data = {
             "email": self.login_user,
@@ -61,8 +65,20 @@ class Auth():
         }
 
         url = "{}/{}".format(URL_API, 'user/login')
-        response = requests.post(url, json=data,
-                                 headers={'Content-Type': 'application/json'})
+        if self._limiter:
+            if self._limiter.rate_limit_remaining > 1:
+                response = requests.post(url, json=data, headers={
+                    'Content-Type': 'application/json'})
+                self._limiter.update(response.headers)
+            else:
+                time.sleep(self._limiter.rate_limit_reset)
+                response = requests.post(url, json=data, headers={
+                    'Content-Type': 'application/json'})
+                self._limiter.update(response.headers)
+        else:
+            response = requests.post(
+                url, json=data, headers={'Content-Type': 'application/json'})
+            self._limiter = Limiter(response.headers)
 
         if response.status_code == 200:
             print(response.json())
@@ -70,11 +86,9 @@ class Auth():
                 raise CommandFailed('Login failed: {}'.format(
                     response.content))
             return response.json()['jwtToken']
-        else:
-            if response.status_code == 429:
-                raise TooManyRequests
 
-            raise LoginFailed("Login Failed")
+        if response.status_code == 429:
+            raise TooManyRequests
 
     def _check_response(self, response):
         if response.status_code != 200:
@@ -94,7 +108,18 @@ class Auth():
 
         url = "{}/{}".format(URL_API, url)
 
-        response = requests.post(url, json=data, headers=headers)
+        if self._limiter:
+            if self._limiter.rate_limit_remaining > 1:
+                response = requests.post(url, json=data, headers=headers)
+                self._limiter.update(response.headers)
+            else:
+                time.sleep(self._limiter.rate_limit_reset)
+                response = requests.post(url, json=data, headers=headers)
+                self._limiter.update(response.headers)
+        else:
+            response = requests.post(url, json=data, headers=headers)
+            self._limiter = Limiter(response.headers)
+
         self._check_response(response)
 
         return response
@@ -106,7 +131,22 @@ class Auth():
             headers['X-Access-Token'] = self._get_token()
 
         url = "{}/{}".format(URL_API, url)
-        return requests.get(url, json=data, headers=headers)
+
+        if self._limiter:
+            if self._limiter.rate_limit_remaining > 1:
+                response = requests.get(url, json=data, headers=headers)
+                self._limiter.update(response.headers)
+            else:
+                print('Requests are too fast. Waiting a bit....')
+                time.sleep(self._limiter.rate_limit_reset)
+                print('Ok all good.. continue')
+                response = requests.get(url, json=data, headers=headers)
+                self._limiter.update(response.headers)
+        else:
+            response = requests.get(url, json=data, headers=headers)
+            self._limiter = Limiter(response.headers)
+
+        return response
 
     def call_get_query(self, url, data):
         url = "{}/{}".format(URL_API, url)
