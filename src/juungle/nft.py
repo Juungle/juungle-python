@@ -4,12 +4,12 @@ from juungle.user import User
 
 
 class NFTs(Auth):
-    def __init__(self):
-        Auth.__init__(self)
+    def __init__(self, login_user=None, login_pass=None):
+        Auth.__init__(self, login_user, login_pass)
         self.clear()
 
     def add_nft(self, nft_info):
-        self.list_nfts.append(NFT(nft_info))
+        self.list_nfts.append(NFT(nft_info, self.login_user, self.login_pass))
 
     def get_nfts(self):
         response = self.call_get_query('/nfts', self._search_options)
@@ -99,7 +99,7 @@ class NFTs(Auth):
 
 
 class NFT(Auth):
-    def __init__(self, nft_info):
+    def __init__(self, nft_info, login_user=None, login_pass=None):
         self.nft_id = nft_info["id"]
         self.user_d = nft_info["userId"]
         self.deposit_txid = nft_info["depositTxid"]
@@ -116,7 +116,7 @@ class NFT(Auth):
         self.purchase_hold = nft_info["purchaseHold"]
         self.buy_price = None
         self.buy_address = None
-        Auth.__init__(self)
+        Auth.__init__(self, login_user, login_pass)
 
     @property
     def name(self):

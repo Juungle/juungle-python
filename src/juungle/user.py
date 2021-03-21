@@ -2,8 +2,8 @@ from juungle.auth import Auth
 
 
 class User(Auth):
-    def __init__(self):
-        Auth.__init__(self)
+    def __init__(self, login_user=None, login_pass=None):
+        Auth.__init__(self, login_user, login_pass)
         self.user_id = None
         self.email = None
         self.deposit_address = None
@@ -24,8 +24,5 @@ class User(Auth):
             "toAddress": to_address,
             "password": self.login_pass
         }
-        try:
-            response = self.call_post('user/withdraw_bch', data, True)
-        except FailedRequest:
-            print('Withdraw failed! Reason: ')
+        response = self.call_post('user/withdraw_bch', data, True)
         print(response.json()['txid'])

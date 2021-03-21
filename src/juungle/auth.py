@@ -59,10 +59,11 @@ class Auth():
             self._limiter = Limiter(response.headers)
 
         if response.status_code == 200:
-            if not response.json()['success']:
+            r_json = response.json()
+            if not r_json['success']:
                 raise CommandFailed('Login failed: {}'.format(
                     response.content))
-            return response.json()['jwtToken']
+            return r_json['jwtToken']
 
         if response.status_code == 429:
             raise TooManyRequests
@@ -73,8 +74,9 @@ class Auth():
                 raise TooManyRequests
             raise FailedRequest('Request failed: {}'.format(response.content))
 
-        if not response.json()['success']:
-            raise CommandFailed('Login failed: {}'.format(response.content))
+        j_response = response.json()
+        if not j_response['success']:
+            raise CommandFailed('Command failed: {}'.format(response.content))
 
     def call_post(self, url, data, with_token=False,
                   headers={'Content-Type': 'application/json'}):

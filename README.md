@@ -1,22 +1,28 @@
 [![Python application](https://github.com/Juungle/juungle-python/actions/workflows/run_tests.yml/badge.svg)](https://github.com/Juungle/juungle-python/actions/workflows/run_tests.yml)
-## NOTE: ALTHOUGH THIS PROJECT WORKS, IT IS STILL UNDER HEAVY DEVELOPMENT AND THINGS WILL CHANGE BEFORE 1.0
+## NOTE: ALTHOUGH THIS PROJECT WORKS, IT IS STILL UNDER HEAVY DEVELOPMENT AND THINGS WILL CHANGE BEFORE v1.0
 
 
 ## juungle-python
 Python package to access Juungle.net API
 
-## Requirements
+## Installation
+`$ python -m pip install juungle`
 
-`$ python -m pip -r requirements.txt`
-
+## Running from source
+```
+$ git clone https://github.com/Juungle/juungle-python.git juungle
+$ cd juungle
+$ python -m pip -r requirements.txt
+```
 ## User credentials for Juungle.net
 ### Using a config file
-Create a file `user-config.ini`:
+Create a file `user-config.ini` with juungle.net credentials
+in the same directory of your code:
 ```
 LOGIN_USERNAME="username@email"
 LOGIN_PASSWORD="password"
 ```
-### While creaing the object
+### OR While creaing the object
 Inside the code
 
 ```python
@@ -24,8 +30,6 @@ from juungle.nfts import NFTs
 
 nfts = NFTs('username@email', 'password')
 ```
-
-
 ## Usage
 List all WAIFUs nfts that are being sale for 0.01 BCH or less
 ```python
