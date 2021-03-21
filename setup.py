@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as f_file:
 
 setuptools.setup(
     name="juungle",
-    version="0.4",
+    version="0.5",
     author="Eduardo Elias",
     author_email="camponez@gmail.com",
     description="Juungle python package for juungle.net",
@@ -18,9 +18,13 @@ setuptools.setup(
         "Bug Tracker": "https://github.com/Juungle/juungle-python/issues",
     },
     classifiers=[
+        "Development Status :: 3 - Alpha",
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
+    ],
+    install_requires=[
+        'requests'
     ],
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
