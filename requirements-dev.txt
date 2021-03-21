@@ -5,3 +5,4 @@ pytest-cov
 pytest-docstyle
 pytest-isort
 pytest-pylint
+mock

@@ -24,5 +24,8 @@ class User(Auth):
             "toAddress": to_address,
             "password": self.login_pass
         }
-        response = self.call_post('user/withdraw_bch', data, True)
+        try:
+            response = self.call_post('user/withdraw_bch', data, True)
+        except FailedRequest:
+            print('Withdraw failed! Reason: ')
         print(response.json()['txid'])

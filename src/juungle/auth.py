@@ -5,33 +5,11 @@ import time
 
 import requests
 
+from juungle.exception import (CommandFailed, FailedRequest, NoLoginProvided,
+                               NoPasswordProvided, TooManyRequests)
 from juungle.rate_limiter import Limiter
 
 URL_API = "https://www.juungle.net/api/v1"
-
-
-class NoLoginProvided(Exception):
-    pass
-
-
-class NoPasswordProvided(Exception):
-    pass
-
-
-class LoginFailed(Exception):
-    pass
-
-
-class CommandFailed(Exception):
-    pass
-
-
-class FailedRequest(Exception):
-    pass
-
-
-class TooManyRequests(Exception):
-    pass
 
 
 class Auth():
