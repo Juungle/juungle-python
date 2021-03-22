@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from juungle.auth import Auth
 from juungle.tokens import TOKENS_IDS
 from juungle.user import User
@@ -9,7 +11,9 @@ class NFTs(Auth):
         self.clear()
 
     def add_nft(self, nft_info):
-        self.list_nfts.append(NFT(nft_info, self.login_user, self.login_pass))
+        nft = NFT(nft_info, self.login_user, self.login_pass)
+        self.list_nfts.append(nft)
+        self.group_ids[nft.token_id].append(nft)
 
     def get_nfts(self):
         response = self.call_get_query('/nfts', self._search_options)
@@ -23,6 +27,7 @@ class NFTs(Auth):
             'offset': 0,
             'limit': 10000
         }
+        self.group_ids = defaultdict(list)
 
     @property
     def token_group(self):
@@ -116,6 +121,10 @@ class NFT(Auth):
         self.purchase_hold = nft_info["purchaseHold"]
         self.buy_price = None
         self.buy_address = None
+
+        self.image = 'https://juungle.net/api/v1/nfts/icon/{}/{}'.format(
+            self.group_tokenid, self.token_id
+        )
         Auth.__init__(self, login_user, login_pass)
 
     @property
@@ -126,16 +135,17 @@ class NFT(Auth):
     def is_purchased(self):
         return bool(self.purchase_txid)
 
+    @property
+    def is_sold(self):
+        return self.is_purchased
+
     def _convert_bch_to_sats(self, bch):
         return bch * 100000000
 
     @property
     def is_for_sale(self):
-        if self.price_satoshis and self.deposit_txid and \
-                not self.withdraw_txid and not self.purchase_txid:
-            return True
-        else:
-            False
+        return self.price_satoshis and self.deposit_txid and \
+            not self.withdraw_txid and not self.purchase_txid
 
     def buy(self, to_address):
         if not to_address:

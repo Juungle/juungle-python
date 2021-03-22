@@ -90,6 +90,7 @@ class NFTPostTest(TestCase):
         self.nft = NFT(nft_info, 'username', 'pass')
 
     def test_buy_nft(self):
+        """test_by_nft"""
         with patch('requests.post') as mock_post:
             response = MagicMock()
             response.status_code = 200
@@ -98,8 +99,9 @@ class NFTPostTest(TestCase):
                 {'success': True, 'jwtToken': 'Token123'},
                 {
                     "success": True,
-                    "address": "bitcoincash:qqgw27en0rtv2a56n2swz8j5yhmv36sme55xsyekpm",
-                    "priceSatoshis": 4400000}
+                    "address": "bitcoincash:qqgw27en0rtv2a56",
+                    "priceSatoshis": 4400000
+                }
             ]
             mock_post.return_value = response
 
@@ -115,8 +117,11 @@ class NFTPostTest(TestCase):
                                                   'application/json',
                                                   'X-Access-Token':
                                                   'Token123'})
+            assert self.nft.buy_price == 4400000
+            assert self.nft.buy_address == 'bitcoincash:qqgw27en0rtv2a56'
 
     def test_set_price(self):
+        """test_set_price"""
         with patch('requests.post') as mock_post:
             response = MagicMock()
             response.status_code = 200
