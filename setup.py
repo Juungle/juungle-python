@@ -13,7 +13,7 @@ extras = {
 
 setuptools.setup(
     name="juungle",
-    version="0.6.0",
+    version="0.6.1",
     author="Eduardo Elias",
     author_email="camponez@gmail.com",
     description="Juungle python package for juungle.net",
