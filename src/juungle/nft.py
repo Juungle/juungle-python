@@ -106,7 +106,7 @@ class NFTs(Auth):
 class NFT(Auth):
     def __init__(self, nft_info, login_user=None, login_pass=None):
         self.nft_id = nft_info["id"]
-        self.user_d = nft_info["userId"]
+        self.user_id = nft_info["userId"]
         self.deposit_txid = nft_info["depositTxid"]
         self.withdraw_txid = nft_info["withdrawTxid"]
         self.purchase_txid = nft_info["purchaseTxid"]
