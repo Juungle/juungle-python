@@ -23,6 +23,15 @@ class AuthPostTest(TestCase):
             with pytest.raises(CommandFailed):
                 self.auth.call_post('url', {})
 
+    def test_get_token(self):
+        with patch('requests.post') as mock_post:
+            response = MagicMock()
+            response.status_code = 400
+            response.json.return_value = {'message': 'Erro command'}
+            mock_post.return_value = response
+            with pytest.raises(CommandFailed):
+                self.auth._get_token()
+
     def test_fail_request(self):
         with patch('requests.post') as mock_post:
             response = MagicMock()
@@ -170,14 +179,11 @@ class NFTPostTest(TestCase):
 
 
 class UserPostTest(TestCase):
-    @patch("juungle.auth.Auth.__init__")
     @patch("juungle.user.User.__init__")
-    def setUp(self, user_mock, auth_mock):
-        auth_mock.return_value = None
+    def setUp(self, user_mock):
         user_mock.return_value = None
 
         self.user = User()
-        self.user.login_user = 'username'
         self.user.login_pass = 'pass'
         self.user._get_token = MagicMock(return_value="Token123")
         self.user._limiter = None

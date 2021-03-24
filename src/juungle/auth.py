@@ -68,6 +68,9 @@ class Auth():
         if response.status_code == 429:
             raise TooManyRequests
 
+        if response.status_code != 200:
+            raise CommandFailed(response.json()["message"])
+
     def _check_response(self, response):
         if response.status_code != 200:
             if response.status_code == 429:

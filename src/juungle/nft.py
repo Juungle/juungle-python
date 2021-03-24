@@ -97,7 +97,7 @@ class NFTs(Auth):
 
     def get_my_nfts(self):
         self.clear()
-        user = User()
+        user = User(self.login_user, self.login_pass)
         self._search_options['userId'] = user.user_id
         # Wait a little bit before trying to query again
         self.get_nfts()
