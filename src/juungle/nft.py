@@ -117,6 +117,8 @@ class NFT(Auth):
         self.price_satoshis = nft_info["priceSatoshis"]
         if nft_info["priceSatoshis"]:
             self.price_bch = nft_info["priceSatoshis"] / 100000000
+        else:
+            self.price_bch = nft_info["priceSatoshis"]
         self.ts = nft_info["ts"]
         self.purchase_hold = nft_info["purchaseHold"]
         self.buy_price = None
