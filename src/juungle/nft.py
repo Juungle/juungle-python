@@ -1,3 +1,4 @@
+"""Module NFT"""
 from collections import defaultdict
 
 from juungle.auth import Auth
@@ -165,7 +166,6 @@ class NFT(Auth):
         self.buy_address = response['address']
 
     def set_price(self, sats=None, bch=None):
-
         if not sats and not bch:
             raise ValueError('Value must be set as satoshis or BCH')
 

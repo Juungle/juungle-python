@@ -60,6 +60,29 @@ for nft in nfts.list_nfts:
     print(nft.token_name)
 ```
 
+### List all my NFTs prices in USD and EUR
+**To query prices we going to use coingecko api**
+
+`pip install pycoingecko`
+
+```python
+from juungle.nft import NFTS
+from pycoingecko import CoinGeckoAPI
+
+nfts = NFTs()
+nfts.get_my_nfts()
+
+# Query price
+cg = CoinGeckoAPI()
+
+bch_price = cg.get_price(ids='bitcoin-cash',
+            vs_currencies=['usd', 'eur'])['bitcoin-cash']
+
+msg = "NFT: {} with price {} USD or {} EUR"
+
+for nft in nfts.list_nfts:
+    print(msg.format(nft.token_name, bch_price['usd'], bch_price['eur'])
+```
 
 ## Tokens Group IDs
 Because tokens/group name are not unique we have to use the HEX id that can be
