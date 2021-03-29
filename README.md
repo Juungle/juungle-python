@@ -31,9 +31,9 @@ from juungle.nfts import NFTs
 nfts = NFTs('username@email', 'password')
 ```
 ## Usage
-List all WAIFUs nfts that are being sale for 0.01 BCH or less
+### List all WAIFUs nfts that are being sale for 0.01 BCH or less
 ```python
-from juungle.nfts import NFTs
+from juungle.nft import NFTs
 
 nfts = NFTs()
 
@@ -48,10 +48,10 @@ for nft in nfts.list_nfts:
         print(nft.token_name)
 ```
 
-List all my NFTs
+### List all my NFTs
 
 ```python
-from juungle.nfts import NFTS
+from juungle.nft import NFTS
 
 nfts = NFTs()
 nfts.get_my_nfts()
