@@ -22,12 +22,13 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
+        python -m pip install --upgrade pip
         DIR=$(pwd)
         cd ../
-        python -m pip install --upgrade pip
         pip install flake8 pytest
         if [ -f ${DIR}/requirements.txt ]; then pip install -r ${DIR}/requirements.txt ; fi
         if [ -f ${DIR}/requirements.txt ]; then pip install -r ${DIR}/requirements-dev.txt ; fi
     - name: Test with pytest
       run: |
+        pip install .
         ./run_tests quiet
